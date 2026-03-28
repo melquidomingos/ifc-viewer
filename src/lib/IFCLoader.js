@@ -31,6 +31,7 @@ export async function initIFCLoader() {
 
   _loader = new IFCLoader();
   // No GitHub Pages o base é /ifc-viewer/ — ajuste aqui se o repositório tiver outro nome
+	await _loader.ifcManager.setWasmPath('/ifc-viewer/');
 	await _loader.ifcManager.applyWebIfcConfig({
   USE_FAST_BOOLS: true,
 });
