@@ -11,11 +11,13 @@
       rel="stylesheet"
     />
     <!-- Injeta headers COEP/COOP via Service Worker (necessário para WASM no GitHub Pages) -->
-    <script>
-      // Detecta o base path automaticamente para funcionar local e no GitHub Pages
-      window.coi_sw_path = (location.pathname.split('/').slice(0, -1).join('/') || '') + '/coi-serviceworker.js';
+    <script type="module">
+      if (!window.crossOriginIsolated && navigator.serviceWorker) {
+        const base = import.meta.env.BASE_URL || '/';
+        navigator.serviceWorker.register(base + 'coi-serviceworker.js')
+        .then(() => { if (!navigator.serviceWorker.controller) window.location.reload(); });
+      }
     </script>
-    <script src="coi-serviceworker.js"></script>
   </head>
   <body>
     <div id="root"></div>
