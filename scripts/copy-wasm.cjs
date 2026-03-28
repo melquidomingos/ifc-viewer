@@ -1,16 +1,18 @@
-// scripts/copy-wasm.cjs
-// Cross-platform script to copy web-ifc.wasm to the public folder
 const fs = require('fs');
 const path = require('path');
 
-const src = path.resolve(__dirname, '../node_modules/web-ifc/web-ifc.wasm');
-const dest = path.resolve(__dirname, '../public/web-ifc.wasm');
+const srcDir = path.resolve(__dirname, '../node_modules/web-ifc');
+const destDir = path.resolve(__dirname, '../public');
 
-if (!fs.existsSync(src)) {
-  console.warn('[copy-wasm] web-ifc.wasm not found at:', src);
-  console.warn('[copy-wasm] Run "npm install" first.');
-  process.exit(0);
+const files = ['web-ifc.wasm', 'web-ifc-mt.wasm'];
+
+for (const file of files) {
+  const src = path.join(srcDir, file);
+  const dest = path.join(destDir, file);
+  if (fs.existsSync(src)) {
+    fs.copyFileSync(src, dest);
+    console.log(`[copy-wasm] ${file} copiado para /public/`);
+  } else {
+    console.warn(`[copy-wasm] ${file} não encontrado — ignorando.`);
+  }
 }
-
-fs.copyFileSync(src, dest);
-console.log('[copy-wasm] web-ifc.wasm copiado para /public/');
